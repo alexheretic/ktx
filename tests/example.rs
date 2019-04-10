@@ -3,7 +3,7 @@ use ktx::{include_ktx, Ktx};
 
 #[test]
 fn logo_example() {
-    let ktx = include_ktx!("logo-bc3.ktx");
+    let ktx = include_ktx!("babg-bc3.ktx");
 
     assert_eq!(ktx.gl_type, 0, "gl_type");
     assert_eq!(ktx.gl_type_size, 1, "gl_type_size");
@@ -29,7 +29,7 @@ const LOGO_LEVEL_7_BLAKE: &str = "971ccf807344ecef5e43d10bcd0bd9260d35b1632548d0
 
 #[test]
 fn logo_example_textures() {
-    let ktx = include_ktx!("logo-bc3.ktx");
+    let ktx = include_ktx!("babg-bc3.ktx");
     let mut textures = ktx.textures();
 
     assert_eq!(format!("{:x}", Blake2s::digest(&textures.next().unwrap())), LOGO_LEVEL_0_BLAKE);
@@ -45,8 +45,20 @@ fn logo_example_textures() {
 
 #[test]
 fn logo_example_texture_level() {
-    let ktx = include_ktx!("logo-bc3.ktx");
+    let ktx = include_ktx!("babg-bc3.ktx");
 
     assert_eq!(format!("{:x}", Blake2s::digest(&ktx.texture_level(0))), LOGO_LEVEL_0_BLAKE);
     assert_eq!(format!("{:x}", Blake2s::digest(&ktx.texture_level(4))), LOGO_LEVEL_4_BLAKE);
+}
+
+#[test]
+fn logo_example_debug() {
+    let dbg_string = format!("{:?}", include_ktx!("babg-bc3.ktx"));
+    assert_eq!(
+        &dbg_string,
+        "Ktx { big_endian: false, gl_type: 0, gl_type_size: 1, gl_format: 0, \
+         gl_internal_format: 33779, gl_base_internal_format: 6408, pixel_width: 260, \
+         pixel_height: 200, pixel_depth: 0, array_elements: 0, faces: 1, mipmap_levels: 8, \
+         bytes_of_key_value_data: 0 }"
+    );
 }
