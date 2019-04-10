@@ -3,6 +3,11 @@ name = "ktx"
 version = "0.1.0"
 authors = ["Alex Butler <alexheretic@gmail.com>"]
 edition = "2018"
+description = "KTX texture storage format parsing"
+repository = "https://github.com/alexheretic/ktx"
+keywords = ["ktx", "texture"]
+license = "Apache-2.0"
+readme="README.md"
 exclude = ["/tests/*.ktx"]
 
 [dependencies]
