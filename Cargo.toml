@@ -1,0 +1,12 @@
+[package]
+name = "ktx"
+version = "0.1.0"
+authors = ["Alex Butler <alexheretic@gmail.com>"]
+edition = "2018"
+exclude = ["/tests/*.ktx"]
+
+[dependencies]
+byteorder = "1"
+
+[dev-dependencies]
+blake2 = "0.8"
