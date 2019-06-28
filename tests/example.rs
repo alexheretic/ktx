@@ -1,21 +1,44 @@
 use blake2::{Blake2s, Digest};
-use ktx::{include_ktx, Ktx};
+use ktx::*;
+use std::{fs, io};
 
 #[test]
-fn logo_example() {
+fn include_logo_example() {
     let ktx = include_ktx!("babg-bc3.ktx");
 
-    assert_eq!(ktx.gl_type, 0, "gl_type");
-    assert_eq!(ktx.gl_type_size, 1, "gl_type_size");
-    assert_eq!(ktx.gl_format, 0, "gl_format");
-    assert_eq!(ktx.gl_internal_format, 33779, "gl_internal_format");
-    assert_eq!(ktx.gl_base_internal_format, 6408, "gl_base_internal_format");
-    assert_eq!(ktx.pixel_width, 260, "pixel_width");
-    assert_eq!(ktx.pixel_height, 200, "pixel_height");
-    assert_eq!(ktx.pixel_depth, 0, "pixel_depth");
-    assert_eq!(ktx.array_elements, 0, "array_elements");
-    assert_eq!(ktx.faces, 1, "faces");
-    assert_eq!(ktx.mipmap_levels, 8, "mipmap_levels");
+    assert!(!ktx.big_endian(), "!big_endian");
+    assert_eq!(ktx.gl_type(), 0, "gl_type");
+    assert_eq!(ktx.gl_type_size(), 1, "gl_type_size");
+    assert_eq!(ktx.gl_format(), 0, "gl_format");
+    assert_eq!(ktx.gl_internal_format(), 33779, "gl_internal_format");
+    assert_eq!(ktx.gl_base_internal_format(), 6408, "gl_base_internal_format");
+    assert_eq!(ktx.pixel_width(), 260, "pixel_width");
+    assert_eq!(ktx.pixel_height(), 200, "pixel_height");
+    assert_eq!(ktx.pixel_depth(), 0, "pixel_depth");
+    assert_eq!(ktx.array_elements(), 0, "array_elements");
+    assert_eq!(ktx.faces(), 1, "faces");
+    assert_eq!(ktx.mipmap_levels(), 8, "mipmap_levels");
+    assert_eq!(ktx.bytes_of_key_value_data(), 0, "bytes_of_key_value_data");
+}
+
+#[test]
+fn read_logo_example() -> io::Result<()> {
+    let ktx = ktx::Decoder::new(io::BufReader::new(fs::File::open("tests/babg-bc3.ktx")?))?;
+
+    assert!(!ktx.big_endian(), "!big_endian");
+    assert_eq!(ktx.gl_type(), 0, "gl_type");
+    assert_eq!(ktx.gl_type_size(), 1, "gl_type_size");
+    assert_eq!(ktx.gl_format(), 0, "gl_format");
+    assert_eq!(ktx.gl_internal_format(), 33779, "gl_internal_format");
+    assert_eq!(ktx.gl_base_internal_format(), 6408, "gl_base_internal_format");
+    assert_eq!(ktx.pixel_width(), 260, "pixel_width");
+    assert_eq!(ktx.pixel_height(), 200, "pixel_height");
+    assert_eq!(ktx.pixel_depth(), 0, "pixel_depth");
+    assert_eq!(ktx.array_elements(), 0, "array_elements");
+    assert_eq!(ktx.faces(), 1, "faces");
+    assert_eq!(ktx.mipmap_levels(), 8, "mipmap_levels");
+    assert_eq!(ktx.bytes_of_key_value_data(), 0, "bytes_of_key_value_data");
+    Ok(())
 }
 
 const LOGO_LEVEL_0_BLAKE: &str = "17ae9dcdc7b7f8c38a66fe00ab92759fde35f74cde2aa52449c2ecbca835a51b";
@@ -28,7 +51,7 @@ const LOGO_LEVEL_6_BLAKE: &str = "22703f682061beb020f2316cbcad901268f1ad7869fd18
 const LOGO_LEVEL_7_BLAKE: &str = "971ccf807344ecef5e43d10bcd0bd9260d35b1632548d045ba2cbbbf8a50075a";
 
 #[test]
-fn logo_example_textures() {
+fn include_logo_example_textures() {
     let ktx = include_ktx!("babg-bc3.ktx");
     let mut textures = ktx.textures();
 
@@ -44,6 +67,23 @@ fn logo_example_textures() {
 }
 
 #[test]
+fn read_logo_example_textures() -> io::Result<()> {
+    let ktx = ktx::Decoder::new(io::BufReader::new(fs::File::open("tests/babg-bc3.ktx")?))?;
+    let mut textures = ktx.read_textures();
+
+    assert_eq!(format!("{:x}", Blake2s::digest(&textures.next().unwrap())), LOGO_LEVEL_0_BLAKE);
+    assert_eq!(format!("{:x}", Blake2s::digest(&textures.next().unwrap())), LOGO_LEVEL_1_BLAKE);
+    assert_eq!(format!("{:x}", Blake2s::digest(&textures.next().unwrap())), LOGO_LEVEL_2_BLAKE);
+    assert_eq!(format!("{:x}", Blake2s::digest(&textures.next().unwrap())), LOGO_LEVEL_3_BLAKE);
+    assert_eq!(format!("{:x}", Blake2s::digest(&textures.next().unwrap())), LOGO_LEVEL_4_BLAKE);
+    assert_eq!(format!("{:x}", Blake2s::digest(&textures.next().unwrap())), LOGO_LEVEL_5_BLAKE);
+    assert_eq!(format!("{:x}", Blake2s::digest(&textures.next().unwrap())), LOGO_LEVEL_6_BLAKE);
+    assert_eq!(format!("{:x}", Blake2s::digest(&textures.next().unwrap())), LOGO_LEVEL_7_BLAKE);
+    assert_eq!(textures.next(), None);
+    Ok(())
+}
+
+#[test]
 fn logo_example_texture_level() {
     let ktx = include_ktx!("babg-bc3.ktx");
 
@@ -56,9 +96,6 @@ fn logo_example_debug() {
     let dbg_string = format!("{:?}", include_ktx!("babg-bc3.ktx"));
     assert_eq!(
         &dbg_string,
-        "Ktx { big_endian: false, gl_type: 0, gl_type_size: 1, gl_format: 0, \
-         gl_internal_format: 33779, gl_base_internal_format: 6408, pixel_width: 260, \
-         pixel_height: 200, pixel_depth: 0, array_elements: 0, faces: 1, mipmap_levels: 8, \
-         bytes_of_key_value_data: 0 }"
+        "Ktx { header: KtxHeader { big_endian: false, gl_type: 0, gl_type_size: 1, gl_format: 0, gl_internal_format: 33779, gl_base_internal_format: 6408, pixel_width: 260, pixel_height: 200, pixel_depth: 0, array_elements: 0, faces: 1, mipmap_levels: 8, bytes_of_key_value_data: 0 } }"
     );
 }
