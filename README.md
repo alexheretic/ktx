@@ -8,10 +8,10 @@ KTX texture storage format parsing.
 Parses byte data according to [https://www.khronos.org/opengles/sdk/tools/KTX/file_format_spec](https://www.khronos.org/opengles/sdk/tools/KTX/file_format_spec).
 
 ```rust
-use ktx::*;
+use ktx::{Ktx, include_ktx, KtxInfo};
 
 // Include & use static ktx data
-let image: Ktx<'static> = include_ktx!("../tests/babg-bc3.ktx");
+let image: Ktx<_> = include_ktx!("../tests/babg-bc3.ktx");
 assert_eq!(image.pixel_width(), 260);
 
 // Read ktx data
