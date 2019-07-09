@@ -1,6 +1,6 @@
 use blake2::{Blake2s, Digest};
 use ktx::*;
-use std::{fs, io};
+use std::{fs, io, sync::Arc};
 
 #[test]
 fn include_logo_example() {
@@ -39,6 +39,15 @@ fn read_logo_example() -> io::Result<()> {
     assert_eq!(ktx.mipmap_levels(), 8, "mipmap_levels");
     assert_eq!(ktx.bytes_of_key_value_data(), 0, "bytes_of_key_value_data");
     Ok(())
+}
+
+#[test]
+fn owned_logo_example() {
+    let owned_ktx_data: Arc<[u8]> = Arc::from(include_bytes!("babg-bc3.ktx").to_vec());
+    let ktx: Ktx<Arc<[u8]>> = Ktx::from(owned_ktx_data);
+
+    assert_eq!(ktx.pixel_width(), 260, "pixel_width");
+    assert_eq!(ktx.pixel_height(), 200, "pixel_height");
 }
 
 const LOGO_LEVEL_0_BLAKE: &str = "17ae9dcdc7b7f8c38a66fe00ab92759fde35f74cde2aa52449c2ecbca835a51b";

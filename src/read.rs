@@ -6,6 +6,7 @@ use std::{
 };
 
 /// KTX texture storage format reader. Useful when reading from a file and/or compressed data.
+/// Provides [`KtxInfo`](../header/trait.KtxInfo.html).
 ///
 /// # Example
 /// ```
@@ -25,8 +26,11 @@ pub struct KtxDecoder<R> {
     data: R,
 }
 
-impl<R> KtxInfo for KtxDecoder<R> {
-    delegate_ktx_info!(header);
+impl<R> AsRef<KtxHeader> for KtxDecoder<R> {
+    #[inline]
+    fn as_ref(&self) -> &KtxHeader {
+        &self.header
+    }
 }
 
 impl<R> fmt::Debug for KtxDecoder<R> {
@@ -79,7 +83,6 @@ pub struct Textures<R> {
 impl<R: io::Read> Iterator for Textures<R> {
     type Item = Vec<u8>;
 
-    #[inline]
     fn next(&mut self) -> Option<Self::Item> {
         if self.next_level >= self.header.mipmap_levels() {
             None

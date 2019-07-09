@@ -83,7 +83,7 @@ pub trait KtxInfo {
     fn bytes_of_key_value_data(&self) -> u32;
 }
 
-/// KTX texture storage format header.
+/// KTX texture storage format header. Provides [`KtxInfo`](../header/trait.KtxInfo.html).
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct KtxHeader {
     big_endian: bool,
@@ -134,114 +134,67 @@ impl KtxHeader {
     }
 }
 
-impl KtxInfo for KtxHeader {
+impl AsRef<KtxHeader> for KtxHeader {
     #[inline]
-    fn big_endian(&self) -> bool {
-        self.big_endian
-    }
-    #[inline]
-    fn gl_type(&self) -> u32 {
-        self.gl_type
-    }
-    #[inline]
-    fn gl_type_size(&self) -> u32 {
-        self.gl_type_size
-    }
-    #[inline]
-    fn gl_format(&self) -> u32 {
-        self.gl_format
-    }
-    #[inline]
-    fn gl_internal_format(&self) -> u32 {
-        self.gl_internal_format
-    }
-    #[inline]
-    fn gl_base_internal_format(&self) -> u32 {
-        self.gl_base_internal_format
-    }
-    #[inline]
-    fn pixel_width(&self) -> u32 {
-        self.pixel_width
-    }
-    #[inline]
-    fn pixel_height(&self) -> u32 {
-        self.pixel_height
-    }
-    #[inline]
-    fn pixel_depth(&self) -> u32 {
-        self.pixel_depth
-    }
-    #[inline]
-    fn array_elements(&self) -> u32 {
-        self.array_elements
-    }
-    #[inline]
-    fn faces(&self) -> u32 {
-        self.faces
-    }
-    #[inline]
-    fn mipmap_levels(&self) -> u32 {
-        self.mipmap_levels
-    }
-    #[inline]
-    fn bytes_of_key_value_data(&self) -> u32 {
-        self.bytes_of_key_value_data
+    fn as_ref(&self) -> &Self {
+        self
     }
 }
 
-macro_rules! delegate_ktx_info {
-    ($delegate:ident) => {
-        #[inline]
-        fn big_endian(&self) -> bool {
-            self.$delegate.big_endian()
-        }
-        #[inline]
-        fn gl_type(&self) -> u32 {
-            self.$delegate.gl_type()
-        }
-        #[inline]
-        fn gl_type_size(&self) -> u32 {
-            self.$delegate.gl_type_size()
-        }
-        #[inline]
-        fn gl_format(&self) -> u32 {
-            self.$delegate.gl_format()
-        }
-        #[inline]
-        fn gl_internal_format(&self) -> u32 {
-            self.$delegate.gl_internal_format()
-        }
-        #[inline]
-        fn gl_base_internal_format(&self) -> u32 {
-            self.$delegate.gl_base_internal_format()
-        }
-        #[inline]
-        fn pixel_width(&self) -> u32 {
-            self.$delegate.pixel_width()
-        }
-        #[inline]
-        fn pixel_height(&self) -> u32 {
-            self.$delegate.pixel_height()
-        }
-        #[inline]
-        fn pixel_depth(&self) -> u32 {
-            self.$delegate.pixel_depth()
-        }
-        #[inline]
-        fn array_elements(&self) -> u32 {
-            self.$delegate.array_elements()
-        }
-        #[inline]
-        fn faces(&self) -> u32 {
-            self.$delegate.faces()
-        }
-        #[inline]
-        fn mipmap_levels(&self) -> u32 {
-            self.$delegate.mipmap_levels()
-        }
-        #[inline]
-        fn bytes_of_key_value_data(&self) -> u32 {
-            self.$delegate.bytes_of_key_value_data()
-        }
+impl<T> KtxInfo for T
+where
+    T: AsRef<KtxHeader>,
+{
+    #[inline]
+    fn big_endian(&self) -> bool {
+        self.as_ref().big_endian
+    }
+    #[inline]
+    fn gl_type(&self) -> u32 {
+        self.as_ref().gl_type
+    }
+    #[inline]
+    fn gl_type_size(&self) -> u32 {
+        self.as_ref().gl_type_size
+    }
+    #[inline]
+    fn gl_format(&self) -> u32 {
+        self.as_ref().gl_format
+    }
+    #[inline]
+    fn gl_internal_format(&self) -> u32 {
+        self.as_ref().gl_internal_format
+    }
+    #[inline]
+    fn gl_base_internal_format(&self) -> u32 {
+        self.as_ref().gl_base_internal_format
+    }
+    #[inline]
+    fn pixel_width(&self) -> u32 {
+        self.as_ref().pixel_width
+    }
+    #[inline]
+    fn pixel_height(&self) -> u32 {
+        self.as_ref().pixel_height
+    }
+    #[inline]
+    fn pixel_depth(&self) -> u32 {
+        self.as_ref().pixel_depth
+    }
+    #[inline]
+    fn array_elements(&self) -> u32 {
+        self.as_ref().array_elements
+    }
+    #[inline]
+    fn faces(&self) -> u32 {
+        self.as_ref().faces
+    }
+    #[inline]
+    fn mipmap_levels(&self) -> u32 {
+        self.as_ref().mipmap_levels
+    }
+    #[inline]
+    fn bytes_of_key_value_data(&self) -> u32 {
+        self.as_ref().bytes_of_key_value_data
     }
 }
