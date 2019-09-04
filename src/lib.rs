@@ -23,7 +23,6 @@
 //! ```
 #![allow(clippy::cast_lossless)]
 
-#[macro_use]
 pub mod header;
 pub mod slice;
 pub mod read;
