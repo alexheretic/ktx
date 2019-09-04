@@ -13,5 +13,9 @@ exclude = ["/tests/*.ktx"]
 [dependencies]
 byteorder = { version = "1.3", default-features = false }
 
+[features]
+default = ["std"]
+std = []
+
 [dev-dependencies]
 blake2 = "0.8"

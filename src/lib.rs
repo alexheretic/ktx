@@ -21,12 +21,15 @@
 //! assert_eq!(decoder.pixel_width(), 260);
 //! # Ok(()) }
 //! ```
+#![cfg_attr(not(feature = "std"), no_std)]
 #![allow(clippy::cast_lossless)]
 
 pub mod header;
 pub mod slice;
+#[cfg(feature = "std")]
 pub mod read;
 
 pub use slice::Ktx;
 pub use header::KtxInfo;
+#[cfg(feature = "std")]
 pub use read::KtxDecoder as Decoder;

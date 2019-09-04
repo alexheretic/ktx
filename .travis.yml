@@ -4,4 +4,8 @@ rust:
 - stable
 - nightly
 env: RUST_BACKTRACE=full
-script: cargo test
+script:
+- cargo test
+# check no-std
+- rustup target add thumbv6m-none-eabi --toolchain stable
+- cargo check --target thumbv6m-none-eabi --no-default-features

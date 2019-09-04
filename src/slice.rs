@@ -1,6 +1,6 @@
 use crate::header::*;
 use byteorder::{BigEndian, ByteOrder, LittleEndian};
-use std::{fmt, ops::Deref};
+use core::{fmt, ops::Deref};
 
 /// KTX texture storage format data stored in a complete slice.
 /// Provides [`KtxInfo`](../header/trait.KtxInfo.html).
@@ -104,7 +104,7 @@ where
     }
 }
 
-impl<D> std::iter::FusedIterator for Textures<'_, D> where D: Deref<Target = [u8]> {}
+impl<D> core::iter::FusedIterator for Textures<'_, D> where D: Deref<Target = [u8]> {}
 
 /// Wrapper for `include_bytes!` returning `Ktx<'static [u8]>`
 ///
