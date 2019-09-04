@@ -4,8 +4,13 @@ rust:
 - stable
 - nightly
 env: RUST_BACKTRACE=full
-script:
-- cargo test
-# check no-std
-- rustup target add thumbv6m-none-eabi --toolchain stable
-- cargo check --target thumbv6m-none-eabi --no-default-features
+script: cargo test
+
+matrix:
+  include:
+  - name: no-std
+    os: linux
+    rust: stable
+    script:
+    - rustup target add thumbv6m-none-eabi
+    - cargo check --target thumbv6m-none-eabi --no-default-features
