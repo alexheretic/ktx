@@ -35,7 +35,9 @@ impl<R> AsRef<KtxHeader> for KtxDecoder<R> {
 
 impl<R> fmt::Debug for KtxDecoder<R> {
     fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
-        fmt.debug_struct("KtxDecoder").field("header", &self.header).finish()
+        fmt.debug_struct("KtxDecoder")
+            .field("header", &self.header)
+            .finish()
     }
 }
 
@@ -52,7 +54,11 @@ impl<R: io::Read> KtxDecoder<R> {
     /// Consumes the `KtxDecoder` to returns an iterator reading texture levels starting at level 0.
     #[inline]
     pub fn read_textures(self) -> Textures<R> {
-        Textures { header: self.header, data: self.data, next_level: 0 }
+        Textures {
+            header: self.header,
+            data: self.data,
+            next_level: 0,
+        }
     }
 
     /// Returns `KtxHeader`. Useful if this info is desired after consuming the `KtxDecoder`.
@@ -108,8 +114,19 @@ impl<R: io::Read> Iterator for Textures<R> {
                 }
             };
 
+            let level_len = if self.header.array_elements() == 0 && self.header.faces() == 6 {
+                6 * level_len
+            } else {
+                level_len
+            };
+
             let mut level = Vec::with_capacity(level_len as _);
-            self.data.by_ref().take(level_len as _).read_to_end(&mut level).ok()?;
+            self.data
+                .by_ref()
+                .take(level_len as _)
+                .read_to_end(&mut level)
+                .ok()?;
+
             Some(level)
         }
     }

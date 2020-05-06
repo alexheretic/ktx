@@ -26,10 +26,13 @@
 
 pub mod header;
 pub mod slice;
+
 #[cfg(feature = "std")]
 pub mod read;
 
-pub use slice::Ktx;
+pub mod write;
+
 pub use header::KtxInfo;
 #[cfg(feature = "std")]
 pub use read::KtxDecoder as Decoder;
+pub use slice::Ktx;

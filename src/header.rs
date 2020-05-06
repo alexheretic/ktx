@@ -1,7 +1,8 @@
 use byteorder::{BigEndian, ByteOrder, LittleEndian};
 
-pub(crate) const KTX_IDENTIFIER: [u8; 12] =
-    [0xAB, 0x4B, 0x54, 0x58, 0x20, 0x31, 0x31, 0xBB, 0x0D, 0x0A, 0x1A, 0x0A];
+pub(crate) const KTX_IDENTIFIER: [u8; 12] = [
+    0xAB, 0x4B, 0x54, 0x58, 0x20, 0x31, 0x31, 0xBB, 0x0D, 0x0A, 0x1A, 0x0A,
+];
 
 /// KTX texture storage format parameters.
 ///
@@ -131,6 +132,41 @@ impl KtxHeader {
             mipmap_levels: vals[10],
             bytes_of_key_value_data: vals[11],
         }
+    }
+
+    pub fn write(&self, first_64_bytes: &mut [u8]) {
+        debug_assert!(first_64_bytes.len() >= 64);
+
+        let mut vals: [u32; 13] = <_>::default();
+        vals[0] = if self.big_endian { 4 } else { 0 };
+        vals[1] = self.gl_type;
+        vals[2] = self.gl_type_size;
+        vals[3] = self.gl_format;
+        vals[4] = self.gl_internal_format;
+        vals[5] = self.gl_base_internal_format;
+        vals[6] = self.pixel_width;
+        vals[7] = self.pixel_height;
+        vals[8] = self.pixel_depth;
+        vals[9] = self.array_elements;
+        vals[10] = self.faces;
+        vals[11] = self.mipmap_levels;
+        vals[12] = self.bytes_of_key_value_data;
+
+        (&mut first_64_bytes[0..KTX_IDENTIFIER.len()]).copy_from_slice(&KTX_IDENTIFIER);
+
+        if self.big_endian {
+            BigEndian::write_u32_into(
+                &vals,
+                &mut first_64_bytes[KTX_IDENTIFIER.len()
+                    ..KTX_IDENTIFIER.len() + (vals.len() * std::mem::size_of::<u32>())],
+            )
+        } else {
+            LittleEndian::write_u32_into(
+                &vals,
+                &mut first_64_bytes[KTX_IDENTIFIER.len()
+                    ..KTX_IDENTIFIER.len() + (vals.len() * std::mem::size_of::<u32>())],
+            );
+        };
     }
 }
 
