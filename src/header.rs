@@ -87,19 +87,19 @@ pub trait KtxInfo {
 /// KTX texture storage format header. Provides [`KtxInfo`](../header/trait.KtxInfo.html).
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct KtxHeader {
-    big_endian: bool,
-    gl_type: u32,
-    gl_type_size: u32,
-    gl_format: u32,
-    gl_internal_format: u32,
-    gl_base_internal_format: u32,
-    pixel_width: u32,
-    pixel_height: u32,
-    pixel_depth: u32,
-    array_elements: u32,
-    faces: u32,
-    mipmap_levels: u32,
-    bytes_of_key_value_data: u32,
+    pub big_endian: bool,
+    pub gl_type: u32,
+    pub gl_type_size: u32,
+    pub gl_format: u32,
+    pub gl_internal_format: u32,
+    pub gl_base_internal_format: u32,
+    pub pixel_width: u32,
+    pub pixel_height: u32,
+    pub pixel_depth: u32,
+    pub array_elements: u32,
+    pub faces: u32,
+    pub mipmap_levels: u32,
+    pub bytes_of_key_value_data: u32,
 }
 
 impl KtxHeader {
