@@ -240,8 +240,10 @@ fn logo_roundtrip() {
 #[test]
 fn papermill_roundtrip() {
     use crate::{header::KtxHeader, write::KtxBuilder};
-    let ktx = include_ktx!("papermill.ktx");
+    use std::io::Write;
 
+    let ktx = include_ktx!("papermill.ktx");
+    println!("ktx = {:?}", ktx);
     let mut builder = KtxBuilder::new(ktx.as_ref().clone());
     ktx.textures()
         .for_each(|tex| builder.add_level(tex.to_vec()));
@@ -258,4 +260,7 @@ fn papermill_roundtrip() {
         .for_each(|(left, right)| {
             assert_eq!(left, right);
         });
+
+    let mut test = std::fs::File::create("target/test.ktx").unwrap();
+    test.write_all(&buffer).unwrap();
 }

@@ -138,7 +138,7 @@ impl KtxHeader {
         debug_assert!(first_64_bytes.len() >= 64);
 
         let mut vals: [u32; 13] = <_>::default();
-        vals[0] = if self.big_endian { 4 } else { 0 };
+        vals[0] = 0x04030201;
         vals[1] = self.gl_type;
         vals[2] = self.gl_type_size;
         vals[3] = self.gl_format;
