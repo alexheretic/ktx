@@ -29,7 +29,9 @@ impl<D> AsRef<KtxHeader> for Ktx<D> {
 
 impl<D> fmt::Debug for Ktx<D> {
     fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
-        fmt.debug_struct("Ktx").field("header", &self.header).finish()
+        fmt.debug_struct("Ktx")
+            .field("header", &self.header)
+            .finish()
     }
 }
 
@@ -42,7 +44,11 @@ where
     pub fn new(ktx_data: D) -> Self {
         let header = KtxHeader::new(&ktx_data);
         let texture_start = 64 + header.bytes_of_key_value_data();
-        Self { header, ktx_data, texture_start }
+        Self {
+            header,
+            ktx_data,
+            texture_start,
+        }
     }
 
     /// Returns texture data at the input level, starting at `0`.
@@ -58,7 +64,11 @@ where
     /// Returns an iterator over the texture levels starting at level 0.
     #[inline]
     pub fn textures(&self) -> Textures<'_, D> {
-        Textures { parent: self, next_level: 0, level_end: self.texture_start as _ }
+        Textures {
+            parent: self,
+            next_level: 0,
+            level_end: self.texture_start as _,
+        }
     }
 }
 

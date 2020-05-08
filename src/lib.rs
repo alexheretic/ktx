@@ -25,11 +25,11 @@
 #![allow(clippy::cast_lossless)]
 
 pub mod header;
-pub mod slice;
 #[cfg(feature = "std")]
 pub mod read;
+pub mod slice;
 
-pub use slice::Ktx;
 pub use header::KtxInfo;
 #[cfg(feature = "std")]
 pub use read::KtxDecoder as Decoder;
+pub use slice::Ktx;

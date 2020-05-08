@@ -11,7 +11,11 @@ fn include_logo_example() {
     assert_eq!(ktx.gl_type_size(), 1, "gl_type_size");
     assert_eq!(ktx.gl_format(), 0, "gl_format");
     assert_eq!(ktx.gl_internal_format(), 33779, "gl_internal_format");
-    assert_eq!(ktx.gl_base_internal_format(), 6408, "gl_base_internal_format");
+    assert_eq!(
+        ktx.gl_base_internal_format(),
+        6408,
+        "gl_base_internal_format"
+    );
     assert_eq!(ktx.pixel_width(), 260, "pixel_width");
     assert_eq!(ktx.pixel_height(), 200, "pixel_height");
     assert_eq!(ktx.pixel_depth(), 0, "pixel_depth");
@@ -30,7 +34,11 @@ fn read_logo_example() -> io::Result<()> {
     assert_eq!(ktx.gl_type_size(), 1, "gl_type_size");
     assert_eq!(ktx.gl_format(), 0, "gl_format");
     assert_eq!(ktx.gl_internal_format(), 33779, "gl_internal_format");
-    assert_eq!(ktx.gl_base_internal_format(), 6408, "gl_base_internal_format");
+    assert_eq!(
+        ktx.gl_base_internal_format(),
+        6408,
+        "gl_base_internal_format"
+    );
     assert_eq!(ktx.pixel_width(), 260, "pixel_width");
     assert_eq!(ktx.pixel_height(), 200, "pixel_height");
     assert_eq!(ktx.pixel_depth(), 0, "pixel_depth");
@@ -64,14 +72,38 @@ fn include_logo_example_textures() {
     let ktx = include_ktx!("babg-bc3.ktx");
     let mut textures = ktx.textures();
 
-    assert_eq!(format!("{:x}", Blake2s::digest(&textures.next().unwrap())), LOGO_LEVEL_0_BLAKE);
-    assert_eq!(format!("{:x}", Blake2s::digest(&textures.next().unwrap())), LOGO_LEVEL_1_BLAKE);
-    assert_eq!(format!("{:x}", Blake2s::digest(&textures.next().unwrap())), LOGO_LEVEL_2_BLAKE);
-    assert_eq!(format!("{:x}", Blake2s::digest(&textures.next().unwrap())), LOGO_LEVEL_3_BLAKE);
-    assert_eq!(format!("{:x}", Blake2s::digest(&textures.next().unwrap())), LOGO_LEVEL_4_BLAKE);
-    assert_eq!(format!("{:x}", Blake2s::digest(&textures.next().unwrap())), LOGO_LEVEL_5_BLAKE);
-    assert_eq!(format!("{:x}", Blake2s::digest(&textures.next().unwrap())), LOGO_LEVEL_6_BLAKE);
-    assert_eq!(format!("{:x}", Blake2s::digest(&textures.next().unwrap())), LOGO_LEVEL_7_BLAKE);
+    assert_eq!(
+        format!("{:x}", Blake2s::digest(&textures.next().unwrap())),
+        LOGO_LEVEL_0_BLAKE
+    );
+    assert_eq!(
+        format!("{:x}", Blake2s::digest(&textures.next().unwrap())),
+        LOGO_LEVEL_1_BLAKE
+    );
+    assert_eq!(
+        format!("{:x}", Blake2s::digest(&textures.next().unwrap())),
+        LOGO_LEVEL_2_BLAKE
+    );
+    assert_eq!(
+        format!("{:x}", Blake2s::digest(&textures.next().unwrap())),
+        LOGO_LEVEL_3_BLAKE
+    );
+    assert_eq!(
+        format!("{:x}", Blake2s::digest(&textures.next().unwrap())),
+        LOGO_LEVEL_4_BLAKE
+    );
+    assert_eq!(
+        format!("{:x}", Blake2s::digest(&textures.next().unwrap())),
+        LOGO_LEVEL_5_BLAKE
+    );
+    assert_eq!(
+        format!("{:x}", Blake2s::digest(&textures.next().unwrap())),
+        LOGO_LEVEL_6_BLAKE
+    );
+    assert_eq!(
+        format!("{:x}", Blake2s::digest(&textures.next().unwrap())),
+        LOGO_LEVEL_7_BLAKE
+    );
     assert_eq!(textures.next(), None);
 }
 
@@ -80,14 +112,38 @@ fn read_logo_example_textures() -> io::Result<()> {
     let ktx = ktx::Decoder::new(io::BufReader::new(fs::File::open("tests/babg-bc3.ktx")?))?;
     let mut textures = ktx.read_textures();
 
-    assert_eq!(format!("{:x}", Blake2s::digest(&textures.next().unwrap())), LOGO_LEVEL_0_BLAKE);
-    assert_eq!(format!("{:x}", Blake2s::digest(&textures.next().unwrap())), LOGO_LEVEL_1_BLAKE);
-    assert_eq!(format!("{:x}", Blake2s::digest(&textures.next().unwrap())), LOGO_LEVEL_2_BLAKE);
-    assert_eq!(format!("{:x}", Blake2s::digest(&textures.next().unwrap())), LOGO_LEVEL_3_BLAKE);
-    assert_eq!(format!("{:x}", Blake2s::digest(&textures.next().unwrap())), LOGO_LEVEL_4_BLAKE);
-    assert_eq!(format!("{:x}", Blake2s::digest(&textures.next().unwrap())), LOGO_LEVEL_5_BLAKE);
-    assert_eq!(format!("{:x}", Blake2s::digest(&textures.next().unwrap())), LOGO_LEVEL_6_BLAKE);
-    assert_eq!(format!("{:x}", Blake2s::digest(&textures.next().unwrap())), LOGO_LEVEL_7_BLAKE);
+    assert_eq!(
+        format!("{:x}", Blake2s::digest(&textures.next().unwrap())),
+        LOGO_LEVEL_0_BLAKE
+    );
+    assert_eq!(
+        format!("{:x}", Blake2s::digest(&textures.next().unwrap())),
+        LOGO_LEVEL_1_BLAKE
+    );
+    assert_eq!(
+        format!("{:x}", Blake2s::digest(&textures.next().unwrap())),
+        LOGO_LEVEL_2_BLAKE
+    );
+    assert_eq!(
+        format!("{:x}", Blake2s::digest(&textures.next().unwrap())),
+        LOGO_LEVEL_3_BLAKE
+    );
+    assert_eq!(
+        format!("{:x}", Blake2s::digest(&textures.next().unwrap())),
+        LOGO_LEVEL_4_BLAKE
+    );
+    assert_eq!(
+        format!("{:x}", Blake2s::digest(&textures.next().unwrap())),
+        LOGO_LEVEL_5_BLAKE
+    );
+    assert_eq!(
+        format!("{:x}", Blake2s::digest(&textures.next().unwrap())),
+        LOGO_LEVEL_6_BLAKE
+    );
+    assert_eq!(
+        format!("{:x}", Blake2s::digest(&textures.next().unwrap())),
+        LOGO_LEVEL_7_BLAKE
+    );
     assert_eq!(textures.next(), None);
     Ok(())
 }
@@ -96,8 +152,14 @@ fn read_logo_example_textures() -> io::Result<()> {
 fn logo_example_texture_level() {
     let ktx = include_ktx!("babg-bc3.ktx");
 
-    assert_eq!(format!("{:x}", Blake2s::digest(&ktx.texture_level(0))), LOGO_LEVEL_0_BLAKE);
-    assert_eq!(format!("{:x}", Blake2s::digest(&ktx.texture_level(4))), LOGO_LEVEL_4_BLAKE);
+    assert_eq!(
+        format!("{:x}", Blake2s::digest(&ktx.texture_level(0))),
+        LOGO_LEVEL_0_BLAKE
+    );
+    assert_eq!(
+        format!("{:x}", Blake2s::digest(&ktx.texture_level(4))),
+        LOGO_LEVEL_4_BLAKE
+    );
 }
 
 #[test]
