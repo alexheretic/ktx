@@ -113,6 +113,11 @@ impl<R: io::Read> Iterator for Textures<R> {
                     LittleEndian::read_u32(&len)
                 }
             };
+            let level_len = if self.header.array_elements() == 0 && self.header.faces() == 6 {
+                6 * level_len
+            } else {
+                level_len
+            };
 
             let mut level = Vec::with_capacity(level_len as _);
             self.data
