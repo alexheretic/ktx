@@ -77,35 +77,35 @@ fn include_logo_example_textures() {
     let mut textures = ktx.textures();
 
     assert_eq!(
-        format!("{:x}", Blake2s::digest(&textures.next().unwrap())),
+        format!("{:x}", Blake2s::digest(textures.next().unwrap())),
         LOGO_LEVEL_0_BLAKE
     );
     assert_eq!(
-        format!("{:x}", Blake2s::digest(&textures.next().unwrap())),
+        format!("{:x}", Blake2s::digest(textures.next().unwrap())),
         LOGO_LEVEL_1_BLAKE
     );
     assert_eq!(
-        format!("{:x}", Blake2s::digest(&textures.next().unwrap())),
+        format!("{:x}", Blake2s::digest(textures.next().unwrap())),
         LOGO_LEVEL_2_BLAKE
     );
     assert_eq!(
-        format!("{:x}", Blake2s::digest(&textures.next().unwrap())),
+        format!("{:x}", Blake2s::digest(textures.next().unwrap())),
         LOGO_LEVEL_3_BLAKE
     );
     assert_eq!(
-        format!("{:x}", Blake2s::digest(&textures.next().unwrap())),
+        format!("{:x}", Blake2s::digest(textures.next().unwrap())),
         LOGO_LEVEL_4_BLAKE
     );
     assert_eq!(
-        format!("{:x}", Blake2s::digest(&textures.next().unwrap())),
+        format!("{:x}", Blake2s::digest(textures.next().unwrap())),
         LOGO_LEVEL_5_BLAKE
     );
     assert_eq!(
-        format!("{:x}", Blake2s::digest(&textures.next().unwrap())),
+        format!("{:x}", Blake2s::digest(textures.next().unwrap())),
         LOGO_LEVEL_6_BLAKE
     );
     assert_eq!(
-        format!("{:x}", Blake2s::digest(&textures.next().unwrap())),
+        format!("{:x}", Blake2s::digest(textures.next().unwrap())),
         LOGO_LEVEL_7_BLAKE
     );
     assert_eq!(textures.next(), None);
@@ -157,11 +157,11 @@ fn logo_example_texture_level() {
     let ktx = include_ktx!("babg-bc3.ktx");
 
     assert_eq!(
-        format!("{:x}", Blake2s::digest(&ktx.texture_level(0))),
+        format!("{:x}", Blake2s::digest(ktx.texture_level(0))),
         LOGO_LEVEL_0_BLAKE
     );
     assert_eq!(
-        format!("{:x}", Blake2s::digest(&ktx.texture_level(4))),
+        format!("{:x}", Blake2s::digest(ktx.texture_level(4))),
         LOGO_LEVEL_4_BLAKE
     );
 }

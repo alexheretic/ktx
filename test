@@ -8,6 +8,6 @@ cd "$dir"
 echo "==> test"
 cargo test
 echo "==> no_std"
-cargo build --target thumbv6m-none-eabi --no-default-features --target-dir ./target/no-std
+cargo build --target thumbv6m-none-eabi --no-default-features
 echo "==> rustfmt"
 cargo fmt -- --check
