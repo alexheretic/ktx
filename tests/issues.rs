@@ -1,11 +1,15 @@
+use ktx::*;
 use std::{fs::File, io::BufReader};
 
 // #9 panic due to buggy? file texture indices.
 #[test]
 fn issue9_panic_reading_uffizi_textures() {
-    let texture = ktx::include_ktx!("uffizi_rgba16f_cube.ktx");
+    let texture = include_ktx!("uffizi_rgba16f_cube.ktx");
 
     dbg!(texture);
+    assert_eq!(texture.mipmap_levels(), 10);
+
+    assert_eq!(texture.textures().count(), 10);
 
     for data in texture.textures() {
         dbg!(data.len());
@@ -18,9 +22,15 @@ fn issue9_panic_reading_uffizi_textures_runtime() {
     let ktx_file = BufReader::new(File::open("tests/uffizi_rgba16f_cube.ktx").unwrap());
     let texture = ktx::Decoder::new(ktx_file).unwrap();
 
-    dbg!(texture.header());
+    dbg!(&texture);
 
-    for data in texture.read_textures() {
+    assert_eq!(texture.mipmap_levels(), 10);
+
+    let levels: Vec<_> = texture.read_textures().collect();
+
+    assert_eq!(levels.len(), 10);
+
+    for data in levels {
         dbg!(data.len());
     }
 }
