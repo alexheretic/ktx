@@ -1,12 +1,12 @@
 use byteorder::{BigEndian, ByteOrder, LittleEndian};
 
-pub(crate) const KTX_IDENTIFIER: [u8; 12] = [
+pub(crate) const KTX1_IDENTIFIER: [u8; 12] = [
     0xAB, 0x4B, 0x54, 0x58, 0x20, 0x31, 0x31, 0xBB, 0x0D, 0x0A, 0x1A, 0x0A,
 ];
 
 /// KTX texture storage format parameters.
 ///
-/// See the [specification](https://www.khronos.org/opengles/sdk/tools/KTX/file_format_spec).
+/// See the [specification](https://www.khronos.org/registry/KTX/specs/1.0/ktxspec_v1.html).
 pub trait KtxInfo {
     /// endianness contains the number 0x04030201 written as a 32 bit integer. If the file is little
     /// endian then this is represented as the bytes 0x01 0x02 0x03 0x04. If the file is big endian
@@ -19,14 +19,22 @@ pub trait KtxInfo {
     /// 1, all texture data to the endianness of the program (i.e. a little endian program must
     /// convert from big endian, and a big endian program must convert to little endian).
     fn big_endian(&self) -> bool;
-    /// For compressed textures, glType must equal 0. For uncompressed textures, glType specifies the type parameter passed to glTex{,Sub}Image*D, usually one of the values from table 8.2 of the OpenGL 4.4 specification [OPENGL44](https://www.khronos.org/opengles/sdk/tools/KTX/file_format_spec/#refsGL44) (UNSIGNED_BYTE, UNSIGNED_SHORT_5_6_5, etc.)
+    /// For compressed textures, glType must equal 0. For uncompressed textures, glType specifies the
+    /// type parameter passed to glTex{,Sub}Image*D, usually one of the values from table 8.2 of the
+    /// OpenGL 4.4 specification [OPENGL44] (UNSIGNED_BYTE, UNSIGNED_SHORT_5_6_5, etc.)
+    ///
+    /// [OPENGL44]: https://www.khronos.org/registry/KTX/specs/1.0/ktxspec_v1.html#refsGL44
     fn gl_type(&self) -> u32;
     /// glTypeSize specifies the data type size that should be used when endianness conversion is
     /// required for the texture data stored in the file. If glType is not 0, this should be the
     /// size in bytes corresponding to glType. For texture data which does not depend on platform
     /// endianness, including compressed texture data, glTypeSize must equal 1.
     fn gl_type_size(&self) -> u32;
-    /// For compressed textures, glFormat must equal 0. For uncompressed textures, glFormat specifies the format parameter passed to glTex{,Sub}Image*D, usually one of the values from table 8.3 of the OpenGL 4.4 specification [OPENGL44](https://www.khronos.org/opengles/sdk/tools/KTX/file_format_spec/#refsGL44) (RGB, RGBA, BGRA, etc.)
+    /// For compressed textures, glFormat must equal 0. For uncompressed textures, glFormat specifies
+    /// the format parameter passed to glTex{,Sub}Image*D, usually one of the values from table 8.3
+    /// of the OpenGL 4.4 specification [OPENGL44] (RGB, RGBA, BGRA, etc.)
+    ///
+    /// [OPENGL44]: https://www.khronos.org/registry/KTX/specs/1.0/ktxspec_v1.html#refsGL44
     fn gl_format(&self) -> u32;
     /// For compressed textures, glInternalFormat must equal the compressed internal format, usually
     /// one of the values from table 8.14 of the OpenGL 4.4 specification [OPENGL44]. For
@@ -37,12 +45,16 @@ pub trait KtxInfo {
     /// and uncompressed textures, except when loading into a context that does not support sized
     /// formats, such as an unextended OpenGL ES 2.0 context where the internalformat parameter is
     /// required to have the same value as the format parameter.
+    ///
+    /// [OPENGL44]: https://www.khronos.org/registry/KTX/specs/1.0/ktxspec_v1.html#refsGL44
     fn gl_internal_format(&self) -> u32;
     /// For both compressed and uncompressed textures, glBaseInternalFormat specifies the base
     /// internal format of the texture, usually one of the values from table 8.11 of the OpenGL 4.4
     /// specification [OPENGL44] (RGB, RGBA, ALPHA, etc.). For uncompressed textures, this value
     /// will be the same as glFormat and is used as the internalformat parameter when loading into a
     /// context that does not support sized formats, such as an unextended OpenGL ES 2.0 context.
+    ///
+    /// [OPENGL44]: https://www.khronos.org/registry/KTX/specs/1.0/ktxspec_v1.html#refsGL44
     fn gl_base_internal_format(&self) -> u32;
     /// The width of the texture image for level 0, in pixels. No rounding to block sizes should be
     /// applied for block compressed textures.
@@ -67,6 +79,8 @@ pub trait KtxInfo {
     /// Due to GL_OES_compressed_paletted_texture [OESCPT] not defining the interaction between
     /// cubemaps and its GL_PALETTE* formats, if `glInternalFormat` is one of its GL_PALETTE*
     /// format, numberOfFaces must be 1
+    ///
+    /// [OESCPT]: https://www.khronos.org/registry/KTX/specs/1.0/ktxspec_v1.html#refsOESCPT
     fn faces(&self) -> u32;
     /// numberOfMipmapLevels must equal 1 for non-mipmapped textures. For mipmapped textures, it
     /// equals the number of mipmaps. Mipmaps are stored in order from largest size to smallest
@@ -106,7 +120,7 @@ impl KtxHeader {
     /// Reads first 64 bytes to parse KTX header data, returns a `KtxHeader`.
     pub fn new(first_64_bytes: &[u8]) -> Self {
         debug_assert!(first_64_bytes.len() >= 64);
-        debug_assert_eq!(&first_64_bytes[..12], &KTX_IDENTIFIER, "Not KTX");
+        debug_assert_eq!(&first_64_bytes[..12], &KTX1_IDENTIFIER, "Not KTX1");
 
         let big_endian = first_64_bytes[12] == 4;
 

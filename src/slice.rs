@@ -5,7 +5,7 @@ use core::{fmt, ops::Deref};
 /// KTX texture storage format data stored in a complete slice.
 /// Provides [`KtxInfo`](../header/trait.KtxInfo.html).
 ///
-/// See the [specification](https://www.khronos.org/opengles/sdk/tools/KTX/file_format_spec).
+/// See the [specification](https://www.khronos.org/registry/KTX/specs/1.0/ktxspec_v1.html).
 ///
 /// # Example
 /// ```
