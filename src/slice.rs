@@ -97,7 +97,10 @@ where
     type Item = &'a [u8];
 
     fn next(&mut self) -> Option<Self::Item> {
-        if self.next_level >= self.parent.mipmap_levels() {
+        if self.next_level >= self.parent.mipmap_levels()
+            // check invalid end len (#9)
+            || self.level_end + 4 > self.parent.ktx_data.len()
+        {
             None
         } else {
             self.next_level += 1;
@@ -109,7 +112,8 @@ where
                 LittleEndian::read_u32(&self.parent.ktx_data[l_end..l_end + 4])
             };
             self.level_end = l_end + 4 + next_lvl_len as usize;
-            Some(&self.parent.ktx_data[l_end + 4..self.level_end])
+            // cap end at data len (#9)
+            Some(&self.parent.ktx_data[l_end + 4..self.level_end.min(self.parent.ktx_data.len())])
         }
     }
 }
