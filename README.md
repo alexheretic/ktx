@@ -8,13 +8,17 @@ KTX v1 texture storage format parsing.
 Parses byte data according to [https://www.khronos.org/registry/KTX/specs/1.0/ktxspec_v1.html](https://www.khronos.org/registry/KTX/specs/1.0/ktxspec_v1.html).
 
 ```rust
+// Include & use static ktx data
 use ktx::{Ktx, include_ktx, KtxInfo};
 
-// Include & use static ktx data
 let image: Ktx<_> = include_ktx!("../tests/babg-bc3.ktx");
 assert_eq!(image.pixel_width(), 260);
+```
 
-// Read ktx data
+```rust
+// Read ktx data at runtime
+use ktx::KtxInfo;
+
 let decoder = ktx::Decoder::new(buf_reader)?;
 assert_eq!(decoder.pixel_width(), 260);
 ```
