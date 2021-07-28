@@ -79,6 +79,9 @@ impl<R: io::Read> KtxDecoder<R> {
 }
 
 /// Iterator that reads texture level data into `Vec<u8>`.
+///
+/// For cubemap textures each level will contain all 6 faces
+/// in order: +X, -X, +Y, -Y, +Z, -Z.
 #[derive(Debug)]
 pub struct Textures<R> {
     header: KtxHeader,

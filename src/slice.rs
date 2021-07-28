@@ -83,6 +83,9 @@ where
 }
 
 /// Iterator over texture level data.
+///
+/// For cubemap textures each level will contain all 6 faces
+/// in order: +X, -X, +Y, -Y, +Z, -Z.
 #[derive(Debug)]
 pub struct Textures<'a, D> {
     parent: &'a Ktx<D>,
