@@ -1,10 +1,9 @@
-//! KTX texture storage format parsing.
+//! KTX v1 texture storage format parsing.
 //!
 //! Parses byte data according to
-//! [https://www.khronos.org/opengles/sdk/tools/KTX/file_format_spec](https://www.khronos.org/opengles/sdk/tools/KTX/file_format_spec).
+//! [https://www.khronos.org/registry/KTX/specs/1.0/ktxspec_v1.html](https://www.khronos.org/registry/KTX/specs/1.0/ktxspec_v1.html).
 //!
-//! # Example
-//!
+//! # Example: Include at compile time
 //! ```
 //! # fn main() -> std::io::Result<()> {
 //! use ktx::{Ktx, include_ktx, KtxInfo};
@@ -12,10 +11,15 @@
 //! // Include & use static ktx data
 //! let image: Ktx<_> = include_ktx!("../tests/babg-bc3.ktx");
 //! assert_eq!(image.pixel_width(), 260);
+//! # Ok(()) }
+//! ```
 //!
-//! // Read ktx data
+//! # Example: Read at runtime
+//! ```
+//! # fn main() -> std::io::Result<()> {
 //! # use std::{io::BufReader, fs::File};
-//! # use ktx::*;
+//! use ktx::KtxInfo;
+//!
 //! # let mut buf_reader = BufReader::new(File::open("tests/babg-bc3.ktx").unwrap());
 //! let decoder = ktx::Decoder::new(buf_reader)?;
 //! assert_eq!(decoder.pixel_width(), 260);

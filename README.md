@@ -3,9 +3,9 @@ ktx
 [![Documentation](https://docs.rs/ktx/badge.svg)](https://docs.rs/ktx)
 ==========
 
-KTX texture storage format parsing.
+KTX v1 texture storage format parsing.
 
-Parses byte data according to [https://www.khronos.org/opengles/sdk/tools/KTX/file_format_spec](https://www.khronos.org/opengles/sdk/tools/KTX/file_format_spec).
+Parses byte data according to [https://www.khronos.org/registry/KTX/specs/1.0/ktxspec_v1.html](https://www.khronos.org/registry/KTX/specs/1.0/ktxspec_v1.html).
 
 ```rust
 use ktx::{Ktx, include_ktx, KtxInfo};
