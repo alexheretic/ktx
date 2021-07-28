@@ -79,6 +79,9 @@ impl<R: io::Read> KtxDecoder<R> {
 }
 
 /// Iterator that reads texture level data into `Vec<u8>`.
+///
+/// For cubemap textures each level will contain all 6 faces
+/// in order: +X, -X, +Y, -Y, +Z, -Z.
 #[derive(Debug)]
 pub struct Textures<R> {
     header: KtxHeader,
@@ -104,7 +107,7 @@ impl<R: io::Read> Iterator for Textures<R> {
             }
 
             self.next_level += 1;
-            let level_len = {
+            let mut level_len = {
                 let mut len = [0; 4];
                 self.data.read_exact(&mut len).ok()?;
                 if self.header.big_endian() {
@@ -113,6 +116,11 @@ impl<R: io::Read> Iterator for Textures<R> {
                     LittleEndian::read_u32(&len)
                 }
             };
+
+            if self.header.array_elements() == 0 && self.header.faces() == 6 {
+                // Multiply for each face, see https://www.khronos.org/registry/KTX/specs/1.0/ktxspec_v1.html#2.16
+                level_len *= 6;
+            }
 
             let mut level = Vec::with_capacity(level_len as _);
             self.data
