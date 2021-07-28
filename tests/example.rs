@@ -1,6 +1,10 @@
 use blake2::{Blake2s, Digest};
 use ktx::*;
-use std::{fs, io, sync::Arc};
+use std::{
+    fs::File,
+    io::{self, BufReader},
+    sync::Arc,
+};
 
 #[test]
 fn include_logo_example() {
@@ -27,7 +31,7 @@ fn include_logo_example() {
 
 #[test]
 fn read_logo_example() -> io::Result<()> {
-    let ktx = ktx::Decoder::new(io::BufReader::new(fs::File::open("tests/babg-bc3.ktx")?))?;
+    let ktx = ktx::Decoder::new(BufReader::new(File::open("tests/babg-bc3.ktx")?))?;
 
     assert!(!ktx.big_endian(), "!big_endian");
     assert_eq!(ktx.gl_type(), 0, "gl_type");
@@ -109,7 +113,7 @@ fn include_logo_example_textures() {
 
 #[test]
 fn read_logo_example_textures() -> io::Result<()> {
-    let ktx = ktx::Decoder::new(io::BufReader::new(fs::File::open("tests/babg-bc3.ktx")?))?;
+    let ktx = ktx::Decoder::new(BufReader::new(File::open("tests/babg-bc3.ktx")?))?;
     let mut textures = ktx.read_textures();
 
     assert_eq!(
@@ -168,5 +172,60 @@ fn logo_example_debug() {
     assert_eq!(
         &dbg_string,
         "Ktx { header: KtxHeader { big_endian: false, gl_type: 0, gl_type_size: 1, gl_format: 0, gl_internal_format: 33779, gl_base_internal_format: 6408, pixel_width: 260, pixel_height: 200, pixel_depth: 0, array_elements: 0, faces: 1, mipmap_levels: 8, bytes_of_key_value_data: 0 } }"
+    );
+}
+
+#[test]
+fn uffizi_6face_include() {
+    let ktx = include_ktx!("uffizi_rgba16f_cube.ktx");
+
+    assert!(!ktx.big_endian(), "!big_endian");
+    assert_eq!(ktx.gl_type(), 5131, "gl_type");
+    assert_eq!(ktx.gl_type_size(), 2, "gl_type_size");
+    assert_eq!(ktx.gl_format(), 6408, "gl_format");
+    assert_eq!(ktx.gl_internal_format(), 34842, "gl_internal_format");
+    assert_eq!(
+        ktx.gl_base_internal_format(),
+        6408,
+        "gl_base_internal_format"
+    );
+    assert_eq!(ktx.pixel_width(), 512, "pixel_width");
+    assert_eq!(ktx.pixel_height(), 512, "pixel_height");
+    assert_eq!(ktx.pixel_depth(), 0, "pixel_depth");
+    assert_eq!(ktx.array_elements(), 0, "array_elements");
+    assert_eq!(ktx.faces(), 6, "faces");
+    assert_eq!(ktx.mipmap_levels(), 10, "mipmap_levels");
+    assert_eq!(ktx.bytes_of_key_value_data(), 0, "bytes_of_key_value_data");
+
+    assert_eq!(ktx.textures().count(), 10, "ktx.textures().count()");
+}
+
+#[test]
+fn uffizi_6face_read() {
+    let ktx_file = BufReader::new(File::open("tests/uffizi_rgba16f_cube.ktx").unwrap());
+    let ktx = ktx::Decoder::new(ktx_file).unwrap();
+
+    assert!(!ktx.big_endian(), "!big_endian");
+    assert_eq!(ktx.gl_type(), 5131, "gl_type");
+    assert_eq!(ktx.gl_type_size(), 2, "gl_type_size");
+    assert_eq!(ktx.gl_format(), 6408, "gl_format");
+    assert_eq!(ktx.gl_internal_format(), 34842, "gl_internal_format");
+    assert_eq!(
+        ktx.gl_base_internal_format(),
+        6408,
+        "gl_base_internal_format"
+    );
+    assert_eq!(ktx.pixel_width(), 512, "pixel_width");
+    assert_eq!(ktx.pixel_height(), 512, "pixel_height");
+    assert_eq!(ktx.pixel_depth(), 0, "pixel_depth");
+    assert_eq!(ktx.array_elements(), 0, "array_elements");
+    assert_eq!(ktx.faces(), 6, "faces");
+    assert_eq!(ktx.mipmap_levels(), 10, "mipmap_levels");
+    assert_eq!(ktx.bytes_of_key_value_data(), 0, "bytes_of_key_value_data");
+
+    assert_eq!(
+        ktx.read_textures().count(),
+        10,
+        "ktx.read_textures().count()"
     );
 }

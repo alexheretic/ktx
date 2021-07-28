@@ -97,23 +97,25 @@ where
     type Item = &'a [u8];
 
     fn next(&mut self) -> Option<Self::Item> {
-        if self.next_level >= self.parent.mipmap_levels()
-            // check invalid end len (#9)
-            || self.level_end + 4 > self.parent.ktx_data.len()
-        {
+        if self.next_level >= self.parent.mipmap_levels() {
             None
         } else {
             self.next_level += 1;
 
             let l_end = self.level_end;
-            let next_lvl_len = if self.parent.big_endian() {
+            let mut next_lvl_len = if self.parent.big_endian() {
                 BigEndian::read_u32(&self.parent.ktx_data[l_end..l_end + 4])
             } else {
                 LittleEndian::read_u32(&self.parent.ktx_data[l_end..l_end + 4])
             };
+
+            if self.parent.array_elements() == 0 && self.parent.faces() == 6 {
+                // Multiply for each face, see https://www.khronos.org/registry/KTX/specs/1.0/ktxspec_v1.html#2.16
+                next_lvl_len *= 6;
+            }
+
             self.level_end = l_end + 4 + next_lvl_len as usize;
-            // cap end at data len (#9)
-            Some(&self.parent.ktx_data[l_end + 4..self.level_end.min(self.parent.ktx_data.len())])
+            Some(&self.parent.ktx_data[l_end + 4..self.level_end])
         }
     }
 }
