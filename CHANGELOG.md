@@ -1,5 +1,5 @@
-# Unreleased
-* Support cubemap textures.
+# 0.3.2
+* Support cubemap textures. For such textures each level will contain all 6 faces in order: +X, -X, +Y, -Y, +Z, -Z.
 
 # 0.3.1
 * Add new default feature `std` which can be disabled to allow no-std usage.
