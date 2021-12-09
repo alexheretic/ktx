@@ -18,4 +18,4 @@ default = ["std"]
 std = []
 
 [dev-dependencies]
-blake2 = { version = "0.9", default-features = false }
+blake2 = { version = "0.10", default-features = false }
