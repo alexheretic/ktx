@@ -6,7 +6,7 @@
 //! # Example: Include at compile time
 //! ```
 //! # fn main() -> std::io::Result<()> {
-//! use ktx::{Ktx, include_ktx, KtxInfo};
+//! use ktx::{include_ktx, Ktx, KtxInfo};
 //!
 //! // Include & use static ktx data
 //! let image: Ktx<_> = include_ktx!("../tests/babg-bc3.ktx");

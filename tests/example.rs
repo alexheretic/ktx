@@ -117,35 +117,35 @@ fn read_logo_example_textures() -> io::Result<()> {
     let mut textures = ktx.read_textures();
 
     assert_eq!(
-        format!("{:x}", Blake2s256::digest(&textures.next().unwrap())),
+        format!("{:x}", Blake2s256::digest(textures.next().unwrap())),
         LOGO_LEVEL_0_BLAKE
     );
     assert_eq!(
-        format!("{:x}", Blake2s256::digest(&textures.next().unwrap())),
+        format!("{:x}", Blake2s256::digest(textures.next().unwrap())),
         LOGO_LEVEL_1_BLAKE
     );
     assert_eq!(
-        format!("{:x}", Blake2s256::digest(&textures.next().unwrap())),
+        format!("{:x}", Blake2s256::digest(textures.next().unwrap())),
         LOGO_LEVEL_2_BLAKE
     );
     assert_eq!(
-        format!("{:x}", Blake2s256::digest(&textures.next().unwrap())),
+        format!("{:x}", Blake2s256::digest(textures.next().unwrap())),
         LOGO_LEVEL_3_BLAKE
     );
     assert_eq!(
-        format!("{:x}", Blake2s256::digest(&textures.next().unwrap())),
+        format!("{:x}", Blake2s256::digest(textures.next().unwrap())),
         LOGO_LEVEL_4_BLAKE
     );
     assert_eq!(
-        format!("{:x}", Blake2s256::digest(&textures.next().unwrap())),
+        format!("{:x}", Blake2s256::digest(textures.next().unwrap())),
         LOGO_LEVEL_5_BLAKE
     );
     assert_eq!(
-        format!("{:x}", Blake2s256::digest(&textures.next().unwrap())),
+        format!("{:x}", Blake2s256::digest(textures.next().unwrap())),
         LOGO_LEVEL_6_BLAKE
     );
     assert_eq!(
-        format!("{:x}", Blake2s256::digest(&textures.next().unwrap())),
+        format!("{:x}", Blake2s256::digest(textures.next().unwrap())),
         LOGO_LEVEL_7_BLAKE
     );
     assert_eq!(textures.next(), None);
