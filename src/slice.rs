@@ -15,9 +15,9 @@ use core::{fmt, ops::Deref};
 /// ```
 #[derive(Clone, Copy)]
 pub struct Ktx<D> {
-    header: KtxHeader,
-    ktx_data: D,
-    texture_start: u32,
+    pub header: KtxHeader,
+    pub ktx_data: D,
+    pub texture_start: u32,
 }
 
 impl<D> AsRef<KtxHeader> for Ktx<D> {
